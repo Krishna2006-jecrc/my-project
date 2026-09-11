@@ -1,0 +1,7 @@
+Django==6.0.6
+djangorestframework
+django-cors-headers
+djangorestframework-simplejwt
+Pillow
+psycopg[binary]
+dj-database-url
