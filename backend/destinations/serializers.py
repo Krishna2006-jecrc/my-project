@@ -15,9 +15,22 @@ class PackageMiniSerializer(serializers.ModelSerializer):
             "image",
         ]
 
-
 class DestinationSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
     packages = PackageMiniSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Destination
+        fields = "__all__"
+
+    def get_image(self, obj):
+        if not obj.image:
+            return None
+
+        return obj.image.url.replace(
+            "/image/upload/v1/media/image/upload/",
+            "/image/upload/",
+        )
 
     class Meta:
         model = Destination
