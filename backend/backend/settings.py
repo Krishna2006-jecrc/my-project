@@ -11,11 +11,19 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+import cloudinary
 
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -51,6 +59,8 @@ INSTALLED_APPS = [
     'contact',
     'gallery',
      'rest_framework_simplejwt',
+     'cloudinary_storage',
+'cloudinary',
 
 ]
 
@@ -147,7 +157,14 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 CORS_ALLOW_ALL_ORIGINS=True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 from datetime import timedelta
